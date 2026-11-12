@@ -42,7 +42,22 @@ Ask which they want, and recommend the first that fits:
 - **OpenAI Whisper API**: `OPENAI_API_KEY` in `.env`.
 - **Local Whisper** (free, slower, no account): `python3 -m pip install faster-whisper`.
 
-## 4. Optional sources (ask, don't assume)
+## 4. Power tools (recommended, free)
+
+Say in one sentence what they buy: captions that land on the word, cleaner silence cuts,
+face-following vertical crops, shot detection, voice cleanup, even loudness, ducked music, cover
+cut-outs. They add a 4-6 GB install, so ask first. If yes:
+
+```
+python3 -m venv .venv && . .venv/bin/activate      # Windows: py -m venv .venv; .venv\Scripts\activate
+python3 -m pip install -r requirements-power.txt
+npm run tools -- check
+```
+
+Every line of `check` should say `ok`. The first run of each tool downloads its model; see
+`docs/POWER-TOOLS.md` for what each command does and where it sits in an edit.
+
+## 5. Optional sources (ask, don't assume)
 
 - **B-roll and music:** their own footage folder; a stock account they already pay for (Storyblocks,
   Artgrid, Pexels for free); a licensed music library (Epidemic Sound, Artlist, or YouTube Audio
@@ -52,13 +67,13 @@ Ask which they want, and recommend the first that fits:
 - **Google Drive** for raw footage: if their Claude has the Google Drive connector, use it;
   otherwise they drop files into `video-projects/<slug>/source/`.
 
-## 5. Brand
+## 6. Brand
 
 Copy `BRAND.md` from the repo root into their first project, then fill it with them in a short
 conversation: colors, fonts, caption case, energy (calm or high energy), what they never want. If
 they skip it, the calm defaults apply.
 
-## 6. First run
+## 7. First run
 
 `npm run new-video -- my-first-video`, put a short talking-head clip in its `source/` folder, then
 use `talking-head-edit`. Finish by telling them in one short paragraph what is installed, which

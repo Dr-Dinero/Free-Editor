@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Lottie Overlay</title>
+    <!-- Local copies: GSAP 3.14.2 and lottie-web 5.13.0 light player (MIT). -->
+    <script src="assets/gsap.min.js"></script>
+    <script src="assets/lottie_light.min.js"></script>
+    <!-- Animation data is inlined as a script so it loads synchronously (no fetch, works from file://). -->
+    <script src="animations/gold-check.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #0d0c0a; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #0d0c0a; }
+      /* Overlays sit in the middle of the frame. */
+      .lottie-beat {
+        position: absolute; left: 50%; top: 50%;
+        width: 520px; height: 520px; margin: -260px 0 0 -260px;
+      }
+      .lottie-label {
+        position: absolute; left: 0; right: 0; top: calc(50% + 300px);
+        text-align: center; color: #f4efe6; font: 800 64px/1.1 Figtree, sans-serif; letter-spacing: 0.01em;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="lottie-overlay" data-start="0" data-duration="4"
+         data-width="1080" data-height="1920">
+      <div id="check-beat" class="clip lottie-beat" data-start="0.5" data-duration="3"
+           data-track-index="4"></div>
+      <div id="check-label" class="clip lottie-label" data-start="1.2" data-duration="2.3"
+           data-track-index="5">Booked.</div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      // HyperFrames' built-in Lottie adapter seeks every animation to the composition's absolute
+      // time, so an animation could only start at 0. Keep a private handle and hide the global so
+      // the timeline below is the only clock and each beat starts on its word.
+      const LOTTIE = window.lottie;
+      window.lottie = undefined;
+
+      // Lottie never plays on its own: the GSAP timeline drives its frame, so every render is
+      // identical. The frame is a property setter, not an onUpdate callback, because seek()
+      // suppresses callbacks and the renderer seeks every frame.
+      function lottieBeat(selector, data, at, opts = {}) {
+        const anim = LOTTIE.loadAnimation({
+          container: document.querySelector(selector), renderer: 'svg',
+          loop: false, autoplay: false, animationData: data,
+        });
+        const last = data.op - data.ip - 1;
+        let f = 0;
+        const driver = { get frame() { return f; }, set frame(v) { f = v; anim.goToAndStop(v, true); } };
+        driver.frame = 0;
+        tl.fromTo(driver, { frame: 0 }, {
+          frame: last, duration: opts.duration ?? last / data.fr, ease: 'none', immediateRender: false,
+        }, at);
+        return anim;
+      }
+
+      lottieBeat('#check-beat', window.LOTTIE_GOLD_CHECK, 0.5);
+      tl.fromTo('#check-label', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 1.2);
+      tl.to(['#check-beat', '#check-label'], { opacity: 0, duration: 0.4, ease: 'power1.in' }, 3.1);
+      tl.set({}, {}, 4);
+      window.__timelines['lottie-overlay'] = tl;
+    </script>
+  </body>
+</html>
