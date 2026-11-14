@@ -223,6 +223,8 @@ def main():
         bad.append(f"{sp['w']}x{sp['h']} is not {F['width']}x{F['height']}")
     if not any(abs(fps - f) < 0.05 for f in F['fps']):
         bad.append(f'{fps:.2f} fps not allowed')
+    if F.get('max_seconds') and sp['vdur'] > F['max_seconds']:
+        bad.append(f"{sp['vdur']:.1f}s is over the {F['max_seconds']}s limit")
     if sp['adur'] is None:
         bad.append('no audio track')
     elif abs(sp['vdur'] - sp['adur']) > 1.5 / fps:

@@ -13,7 +13,7 @@ Only write what differs from `default.json`; everything else is inherited.
 
 | Key | What it decides |
 | --- | --- |
-| `format` | Frame size and allowed frame rates. |
+| `format` | Frame size, allowed frame rates, and an optional `max_seconds`. |
 | `audio.lufs`, `true_peak_max` | Loudness target and ceiling. `music_under_voice_db` is the mix rule for the renderer. |
 | `cuts.allow_punch` | `false` means no zoom at a cut, ever (calm styles). |
 | `cuts.min_punch` | A punch-in smaller than this reads as a glitch and fails. |
