@@ -25,6 +25,8 @@
     "gate": "python3 .claude/skills/edit-qc/scripts/first_pass_gate.py",
     "deliver": "python3 scripts/deliver.py",
     "tools": "python3 scripts/power_tools.py",
+    "engine:sync": "node scripts/engine-sync.mjs",
+    "engine:check": "node scripts/engine-sync.mjs --check",
     "lottie:vendor": "node scripts/vendor-lottie.mjs"
   },
   "engines": {

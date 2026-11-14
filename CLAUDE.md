@@ -110,6 +110,9 @@ A style or client decision lives in `presets/<name>.json` (see `presets/README.m
 in chat. Review notes that repeat become rules in `docs/FIRST-PASS-RULES.md`. Read `docs/SCALE.md`
 before a batch and `docs/3D.md` before any 3D.
 
+This repository is the one engine. Private pack repos pull it in with `npm run engine:sync`
+(`docs/ONE-ENGINE.md`); fix tools here, never in a pack's copy.
+
 Honor approvals already provided. When review approval is missing, prepare the
 concrete preview or cut proposal first. Never claim a lint result proves visual
 quality. Only publish or upload a finished video when the user authorizes it.

@@ -23,6 +23,14 @@ import { dirname, join, resolve, basename, extname } from "node:path";
 import { spawnSync } from "node:child_process";
 import { argv, exit } from "node:process";
 
+// FFmpeg 7+ reads a filtergraph file with "-/filter_complex"; 6.x and older only know
+// "-filter_complex_script". Pick the flag the installed ffmpeg understands.
+function filterScriptFlag() {
+  const v = spawnSync("ffmpeg", ["-version"], { encoding: "utf8" }).stdout || "";
+  const major = Number(v.match(/ffmpeg version n?(\d+)/)?.[1]);
+  return major && major < 7 ? "-filter_complex_script" : "-/filter_complex";
+}
+
 function die(m, c = 1) { console.error(m); exit(c); }
 
 const args = argv.slice(2);
@@ -164,7 +172,7 @@ if (opts.video) {
   summary.video = { input: videoPath, output: outputPath, rendered: false };
   if (opts.apply) {
     console.error(`rendering cut video -> ${outputPath}`);
-    const ff = spawnSync("ffmpeg", ["-y", "-i", videoPath, "-/filter_complex", scriptPath, "-map", "[v]", "-map", "[a]", "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", outputPath], { stdio: ["ignore", "ignore", "inherit"] });
+    const ff = spawnSync("ffmpeg", ["-y", "-i", videoPath, filterScriptFlag(), scriptPath, "-map", "[v]", "-map", "[a]", "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", outputPath], { stdio: ["ignore", "ignore", "inherit"] });
     if (ff.status !== 0) die(`ffmpeg failed (status ${ff.status})`, ff.status ?? 1);
     summary.video.rendered = true;
   } else summary.hint = "re-run with --apply to render";
