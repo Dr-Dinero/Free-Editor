@@ -18,6 +18,10 @@ the cut needs screen recordings or designed scenes.
    `references/motion-rules.md`.
 3. Get a word-level transcript of the original recording (see `docs/TOOLS-AND-API-KEYS.md`).
    Every edit decision anchors to an exact transcript phrase, never a guessed time.
+   When the power tools are installed (`npm run tools -- check`), re-time it with
+   `npm run tools -- align <source> --transcript <t.json> -o <t.aligned.json>` so captions sit on
+   the spoken word, and run `npm run tools -- speech <source> -o speech.json` so phrase cuts land
+   in real gaps. Horizontal source: `reframe` before planning. See `docs/POWER-TOOLS.md`.
 
 ## Steps
 
@@ -43,4 +47,5 @@ that spend. Otherwise list the idea in NOTES.md.
 ## Needs
 
 FFmpeg with libass, Python 3 with `numpy` and `opencv-python-headless<5`, and the brand fonts
-installed. The `setup-editor` skill checks all of these.
+installed. The `setup-editor` skill checks all of these. Optional: `requirements-power.txt`
+(WhisperX, Silero VAD, MediaPipe, PySceneDetect, Demucs, ffmpeg-normalize, rembg).

@@ -1,0 +1,9 @@
+{
+  "name": "bold-ads",
+  "about": "High-energy ads and reels. Punch-ins at cuts are welcome but must be big enough to read as a choice. The end card arrives the moment speaking stops.",
+  "cuts": { "allow_punch": true, "min_punch": 0.06 },
+  "overlays": { "lead_max": 0.20, "late_max": 0.04, "zone": "centre" },
+  "ending": { "mode": "endcard", "hold_min": 0.5 },
+  "look": { "allow_grade": false },
+  "style": { "caption_font": "Inter Tight ExtraBold", "title_font": "Anton", "caption_y": 0.67, "motion": "punchy", "sfx_on_overlays": true }
+}

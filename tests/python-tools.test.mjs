@@ -10,6 +10,8 @@ const python = process.platform === 'win32' ? 'py' : 'python3';
 const scripts = [
   '.claude/skills/talking-head-edit/scripts/talking_head.py',
   '.claude/skills/edit-qc/scripts/craft_qc.py',
+  '.claude/skills/edit-qc/scripts/first_pass_gate.py',
+  'scripts/deliver.py',
 ];
 const hasPython = !spawnSync(python, ['--version']).error;
 

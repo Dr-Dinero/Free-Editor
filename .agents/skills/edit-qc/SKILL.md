@@ -1,6 +1,6 @@
 ---
 name: edit-qc
-description: Check a rendered edit before anyone sees it, with measured craft checks (zoom pops, uncovered jump cuts, stacked events, loudness, joins, words, glitches, ending) and then a real watch and listen, ending in PASS or a numbered fix list. Use after every draft or final render.
+description: Check a rendered edit before anyone sees it, with the first-pass gate that works on any render plus measured craft checks (clipped words, zoom pops, uncovered jump cuts, stacked events, loudness, joins, words, glitches, ending) and then a real watch and listen, ending in PASS or a numbered fix list. Use after every draft or final render.
 ---
 
 # Edit QC
@@ -9,6 +9,20 @@ You review the encoded render, not the plan. Lint results never prove visual qua
 measured PASS is evidence, not taste.
 
 ## 1. Measure
+
+Run the first-pass gate on every render, whichever tool made it. It needs only the file:
+
+```sh
+npm run gate -- renders/<name>.mp4 --preset presets/<style>.json --expect <script>.txt --out qa
+```
+
+`--expect` is the script as plain text, so a clipped or wrong word ("$297" heard as "$200") fails.
+`--edit` takes a neutral edit sheet (`{joins, words, overlays:[{id, anchor, start}]}`) so overlays are
+checked against their words. `--composition index.html` checks colours and grading against the
+preset. The rules behind each check are in `docs/FIRST-PASS-RULES.md`. FAIL blocks delivery
+(`npm run deliver` refuses it); every WARN gets looked at.
+
+Renders made with `talking_head.py` also run the plan-aware checks:
 
 ```sh
 python3 <skill>/scripts/craft_qc.py renders/<name>.mp4 --plan <name>.plan.json \
@@ -20,7 +34,8 @@ pop. `--transcript` is a provider transcript of the render (ElevenLabs Scribe, W
 without one the words check reports NOT RUN and must be done another way. For edits made without
 `talking_head.py`, drop `--plan` and `--voice`.
 
-Any FAIL is a FAIL here. Open every strip in `qa/flags/` before writing a verdict.
+Any FAIL is a FAIL here. Open every strip in `qa/flags/` before writing a verdict, and only those
+strips: do not page through frames the gate did not flag to answer a question it already measured.
 
 ## 2. Watch and listen
 
@@ -47,7 +62,7 @@ Write `qa/edit-qc.md`:
 ```
 Verdict: PASS            (or FAIL)
 Render checked: <path>
-Evidence: <craft_qc results, frames looked at, timestamps listened to>
+Evidence: <first-pass gate and craft_qc results, frames looked at, timestamps listened to>
 Fixes:                   (FAIL only, numbered, each with a timestamp and the expected result)
 1. 0:12.4 pop at the join after "listen"; trim to the silent point and fade 6 ms.
 ```
