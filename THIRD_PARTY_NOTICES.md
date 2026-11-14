@@ -11,6 +11,10 @@ projects, showcase videos, and AI Automation Society brand assets; none are redi
   The upstream Apache license is included in licenses/HYPERFRAMES-LICENSE.
 - GSAP is installed from npm; its own license applies. See the license files in
   node_modules/gsap and https://gsap.com/community/standard-license/.
+- lottie-web (MIT, Airbnb) is installed from npm. The optional Python power tools in
+  requirements-power.txt are installed by the user, not redistributed: WhisperX (BSD-2),
+  Silero VAD (MIT), PySceneDetect (BSD-3), MediaPipe (Apache-2.0), Demucs (MIT),
+  ffmpeg-normalize (MIT), rembg (MIT). Their downloaded model weights keep their own licenses.
 - Some library styles reference Google Fonts. Font licenses remain with their
   publishers. Install and preserve applicable licenses when localizing fonts.
 - Vox, Kallaway, and Infinite are aesthetic reference names. These templates are

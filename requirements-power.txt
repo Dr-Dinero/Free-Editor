@@ -1,0 +1,10 @@
+# Optional power tools for scripts/power_tools.py (npm run tools -- <command>).
+# Install: python3 -m pip install -r requirements-power.txt   (about 4-6 GB with PyTorch)
+# Each command imports only its own tool, so any one of these can be skipped.
+whisperx>=3.4        # align: word timestamps on the audio (BSD-2); pins its own PyTorch
+silero-vad>=5.1      # speech: speech regions and gaps (MIT)
+scenedetect>=0.6.4   # scenes: shot boundaries (BSD-3)
+mediapipe>=0.10.18   # reframe: face-following 9:16 crop (Apache-2.0)
+demucs>=4.0.1        # clean-voice: voice-only stem (MIT)
+ffmpeg-normalize>=1.31  # loudness: EBU R128 two-pass loudness (MIT)
+rembg[cpu]>=2.0.60   # cutout: subject cut-outs for covers (MIT)

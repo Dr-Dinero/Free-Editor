@@ -23,14 +23,17 @@
     "edit": "python3 .claude/skills/talking-head-edit/scripts/talking_head.py",
     "qc": "python3 .claude/skills/edit-qc/scripts/craft_qc.py",
     "gate": "python3 .claude/skills/edit-qc/scripts/first_pass_gate.py",
-    "deliver": "python3 scripts/deliver.py"
+    "deliver": "python3 scripts/deliver.py",
+    "tools": "python3 scripts/power_tools.py",
+    "lottie:vendor": "node scripts/vendor-lottie.mjs"
   },
   "engines": {
     "node": ">=22"
   },
   "devDependencies": {
-    "hyperframes": "0.7.109",
     "gsap": "3.14.2",
+    "hyperframes": "0.7.109",
+    "lottie-web": "5.13.0",
     "playwright": "^1.59.1"
   }
 }

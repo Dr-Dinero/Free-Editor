@@ -19,6 +19,9 @@ if (!libass.error && !/\bass\b/.test(libass.stdout || '')) { console.error('ffmp
 if (Number(process.versions.node.split('.')[0]) < 22) { console.error('Node 22+ required.'); missing = true; }
 if (!existsSync(join(root, '.env'))) { copyFileSync(join(root, '.env.example'), join(root, '.env')); console.log('Created local .env. Fill only the keys your chosen services need.'); }
 else console.log('Existing .env preserved.');
+const power = spawnSync(python, [join(root, 'scripts', 'power_tools.py'), 'check'], { encoding: 'utf8', windowsHide: true });
+if (power.status === 0) console.log('Power tools: all installed (npm run tools -- check).');
+else console.log('Power tools (optional): not all installed. See docs/POWER-TOOLS.md, then pip install -r requirements-power.txt.');
 console.log('Service setup and alternatives: docs/TOOLS-AND-API-KEYS.md');
 console.log('Next: npx hyperframes doctor (Chrome diagnostics), then npm run demo.');
 console.log('New here? Ask your assistant to run the setup-editor skill; it walks you through every step.');

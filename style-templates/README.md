@@ -5,6 +5,9 @@
 - `left-glass-popout/`: a camera reframe with an animated glass panel. Supply
   your own `assets/source.mp4` with video and audio, and adjust source duration,
   crop, card copy, and timings before rendering.
+- `lottie-overlay/`: a centred Lottie animation (After Effects export) driven frame by frame
+  from the GSAP timeline, with a label. Run `npm run lottie:vendor -- <dir>` to copy the players
+  into `assets/`. Read the Lottie section of `docs/POWER-TOOLS.md` before swapping animations.
 
 These are standalone scene starting points, while style-library contains cards.
 Templates currently reference a public GSAP CDN. For a self-contained project,
