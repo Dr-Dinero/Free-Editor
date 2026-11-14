@@ -643,6 +643,11 @@ def shot_at(shots, t):
     return shots[-1]
 
 
+# Calm default look (references/craft-floor.md); BRAND.md values go in the spec's "look".
+# A wrapper that imports this module may replace DEFAULT_LOOK with its own house look.
+DEFAULT_LOOK = dict(font='Figtree ExtraBold', title_font='Libre Caslon Text', accent='#C9A45C',
+                    text='#F4EFE6', caption_px=80, case='as-spoken', motion='calm', caption_y=1300,
+                    title_y=205, chip_y=215, cta_y=190, slam_y=1190)
 BROLL_TOP_H = 880     # split layout: b-roll above, speaker below
 
 
@@ -700,10 +705,7 @@ def render(plan_path, draft=False):
     fps = p['fps']
     os.makedirs(os.path.join(root, 'renders'), exist_ok=True)
     os.makedirs(os.path.join(root, 'cache'), exist_ok=True)
-    # Calm default look (references/craft-floor.md); BRAND.md values go in the spec's "look".
-    look = dict(font='Figtree ExtraBold', title_font='Libre Caslon Text', accent='#C9A45C',
-                text='#F4EFE6', caption_px=80, case='as-spoken', motion='calm', caption_y=1300,
-                title_y=205, chip_y=215, cta_y=190, slam_y=1190)
+    look = dict(DEFAULT_LOOK)
     look.update(p.get('look', {}))
     ass = os.path.join(root, 'cache', 'captions.ass')
     build_ass(p, ass, look)
@@ -764,10 +766,15 @@ def render(plan_path, draft=False):
     return out
 
 
-if __name__ == '__main__':
-    if len(sys.argv) < 3 or sys.argv[1] not in ('plan', 'render'):
+def main(argv=None):
+    argv = sys.argv if argv is None else argv
+    if len(argv) < 3 or argv[1] not in ('plan', 'render'):
         print(__doc__); sys.exit(1)
-    if sys.argv[1] == 'plan':
-        plan(sys.argv[2])
+    if argv[1] == 'plan':
+        plan(argv[2])
     else:
-        render(sys.argv[2], draft='--draft' in sys.argv)
+        render(argv[2], draft='--draft' in argv)
+
+
+if __name__ == '__main__':
+    main()

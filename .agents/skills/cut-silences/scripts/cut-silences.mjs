@@ -31,6 +31,14 @@ import { dirname, join, resolve, basename, extname } from "node:path";
 import { spawnSync } from "node:child_process";
 import { argv, exit } from "node:process";
 
+// FFmpeg 7+ reads a filtergraph file with "-/filter_complex"; 6.x and older only know
+// "-filter_complex_script". Pick the flag the installed ffmpeg understands.
+function filterScriptFlag() {
+  const v = spawnSync("ffmpeg", ["-version"], { encoding: "utf8" }).stdout || "";
+  const major = Number(v.match(/ffmpeg version n?(\d+)/)?.[1]);
+  return major && major < 7 ? "-filter_complex_script" : "-/filter_complex";
+}
+
 function die(msg, code = 1) {
   console.error(msg);
   exit(code);
@@ -277,7 +285,7 @@ if (opts.video) {
 
   const ffArgs = [
     "-y", "-i", videoPath,
-    "-/filter_complex", scriptPath,
+    filterScriptFlag(), scriptPath,
     "-map", "[v]", "-map", "[a]",
     "-c:v", "libx264", "-preset", "medium", "-crf", "18",
     "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart",
