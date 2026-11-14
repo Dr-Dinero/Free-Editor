@@ -1,2 +1,4 @@
 numpy>=1.24
 opencv-python-headless>=4.8,<5
+# Optional: lets the first-pass gate transcribe a render itself (otherwise pass --transcript).
+# faster-whisper>=1.0

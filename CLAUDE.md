@@ -99,8 +99,15 @@ inspect hero frames and transition boundaries, and listen to the audio joins.
 Check cropped faces, overflow, black flashes, readable labels, clipping, and A/V
 sync. Resolve problems before the final render. Save evidence in VERIFY.md.
 Use a Range-capable preview server for MP4 scrubbing (for example `npx serve`).
-Run `edit-qc` (`npm run qc -- <render>`) on every encoded draft and final; any
-FAIL blocks the final, and every flag strip gets looked at.
+Run `edit-qc` on every encoded draft and final: `npm run gate -- <render> --preset
+presets/<style>.json --expect <script>.txt` works on any render, and `npm run qc` adds the
+plan-aware checks for `talking_head.py`. Any FAIL blocks the final, and every flag strip gets
+looked at. Hand off with `npm run deliver`, which refuses a failed gate, versions the file, and
+splits and checksums large transfers.
+
+A style or client decision lives in `presets/<name>.json` (see `presets/README.md`), never only
+in chat. Review notes that repeat become rules in `docs/FIRST-PASS-RULES.md`. Read `docs/SCALE.md`
+before a batch and `docs/3D.md` before any 3D.
 
 Honor approvals already provided. When review approval is missing, prepare the
 concrete preview or cut proposal first. Never claim a lint result proves visual

@@ -56,6 +56,14 @@ Every talking-head edit clears these by default (see
 ### Craft QC
 
 `npm run qc -- renders/my-short.mp4 --plan my-short.plan.json --voice cache/voice.wav --out qa`
+
+Any render, from any tool, goes through the first-pass gate before delivery:
+
+`npm run gate -- renders/my-short.mp4 --preset presets/calm-teaching.json --expect script.txt`
+
+`npm run deliver -- renders/my-short.mp4 --id my-short --version v1`
+
+The rules behind the gate are in `docs/FIRST-PASS-RULES.md`; presets are explained in `presets/README.md`.
 measures zoom pops, uncovered jump cuts, sideways pops, push speed, stacked events, loudness, audio
 joins, glitches, spoken words, and the ending, and saves a frame strip of every failure. A pass is
 evidence, not taste; you still watch it.

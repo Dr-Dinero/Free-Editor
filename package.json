@@ -21,7 +21,9 @@
     "validate:footage": "node .claude/skills/short-form-edit/scripts/validate-footage.mjs",
     "preflight:all": "node scripts/preflight-all.mjs",
     "edit": "python3 .claude/skills/talking-head-edit/scripts/talking_head.py",
-    "qc": "python3 .claude/skills/edit-qc/scripts/craft_qc.py"
+    "qc": "python3 .claude/skills/edit-qc/scripts/craft_qc.py",
+    "gate": "python3 .claude/skills/edit-qc/scripts/first_pass_gate.py",
+    "deliver": "python3 scripts/deliver.py"
   },
   "engines": {
     "node": ">=22"

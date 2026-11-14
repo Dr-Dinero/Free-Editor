@@ -1,0 +1,8 @@
+{
+  "name": "calm-teaching",
+  "about": "Sermons, teachings and testimonies. No zoom at cuts, one slow push, b-roll covers jump cuts, hold then fade.",
+  "cuts": { "allow_punch": false },
+  "ending": { "mode": "hold", "hold_min": 0.9, "hold_max": 2.2 },
+  "look": { "palette": ["#F4EFE6", "#C9A45C"], "allow_grade": false },
+  "style": { "caption_font": "Figtree ExtraBold", "title_font": "Libre Caslon Text", "motion": "calm" }
+}
