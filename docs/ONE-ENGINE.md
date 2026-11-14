@@ -33,7 +33,7 @@ rebuilds it. That is how the same renderer came to exist in two repositories wit
    npm test
    ```
 
-   This copies every engine file, and writes `engine.lock.json` with the engine commit and a
+   This copies every engine file, and writes `engine.lock` with the engine commit and a
    checksum per file. Commit the result.
 
 3. Run `npm run engine:check` in the pack's tests. It works offline and fails

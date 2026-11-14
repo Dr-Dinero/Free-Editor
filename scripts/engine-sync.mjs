@@ -4,7 +4,7 @@
 // The engine is this repository. A pack repo holds an engine.json and pulls the engine's files
 // in with this script, so there is one place to fix a tool and no second copy to drift.
 //
-//   node scripts/engine-sync.mjs <engine checkout>   copy the engine in and write engine.lock.json
+//   node scripts/engine-sync.mjs <engine checkout>   copy the engine in and write engine.lock
 //   node scripts/engine-sync.mjs --check             offline: fail if an engine file was edited here
 //
 // engine.json in the pack repo:
@@ -22,9 +22,18 @@ const flag = name => { const i = args.indexOf(name); return i >= 0 ? args[i + 1]
 const root = resolve(flag('--root') || process.cwd());
 const from = args.find((a, i) => !a.startsWith('--') && args[i - 1] !== '--root');
 const configPath = join(root, 'engine.json');
-const lockPath = join(root, 'engine.lock.json');
+const lockPath = join(root, 'engine.lock');
 const sha = path => createHash('sha256').update(readFileSync(path)).digest('hex');
 const die = message => { console.error(message); process.exit(1); };
+// The lock is plain text in sha256sum layout: "# commit <sha>", then "<checksum>  <path>" lines.
+function readLock() {
+  const lock = { commit: '', files: {} };
+  for (const line of readFileSync(lockPath, 'utf8').split('\n')) {
+    if (line.startsWith('# commit ')) lock.commit = line.slice(9).trim();
+    else if (/^[0-9a-f]{64}  /.test(line)) lock.files[line.slice(66)] = line.slice(0, 64);
+  }
+  return lock;
+}
 
 if (!existsSync(configPath)) {
   console.log('No engine.json here. This is the engine itself, or a repo that does not track one.');
@@ -32,12 +41,12 @@ if (!existsSync(configPath)) {
 }
 const config = JSON.parse(readFileSync(configPath, 'utf8'));
 // Mirrors are rebuilt by `npm run sync:skills`, and these two files belong to the pack.
-const keep = [...(config.keep || []), '.agents/', 'engine.json', 'engine.lock.json'];
+const keep = [...(config.keep || []), '.agents/', 'engine.json', 'engine.lock'];
 const kept = path => keep.some(k => (k.endsWith('/') ? path.startsWith(k) : path === k));
 
 if (check) {
-  if (!existsSync(lockPath)) die('engine.lock.json is missing. Run: npm run engine:sync -- <engine checkout>');
-  const lock = JSON.parse(readFileSync(lockPath, 'utf8'));
+  if (!existsSync(lockPath)) die('engine.lock is missing. Run: npm run engine:sync -- <engine checkout>');
+  const lock = readLock();
   const bad = [];
   for (const [path, hash] of Object.entries(lock.files)) {
     if (kept(path)) continue;
@@ -60,7 +69,7 @@ const listed = git('ls-files', '-z');
 if (listed.status !== 0) die(`Not a git checkout: ${engine}`);
 if (git('status', '--porcelain').stdout.trim()) console.warn('Warning: the engine checkout has uncommitted changes; they are copied too.');
 const commit = git('rev-parse', 'HEAD').stdout.trim();
-const previous = existsSync(lockPath) ? JSON.parse(readFileSync(lockPath, 'utf8')).files : {};
+const previous = existsSync(lockPath) ? readLock().files : {};
 
 const files = {};
 let added = 0, updated = 0, same = 0;
@@ -78,7 +87,8 @@ for (const path of listed.stdout.split('\0').filter(Boolean).sort()) {
   copyFileSync(source, dest);
 }
 const dropped = Object.keys(previous).filter(path => !(path in files) && !kept(path) && existsSync(join(root, path)));
-writeFileSync(lockPath, JSON.stringify({ source: config.source || null, commit, files }, null, 1) + '\n');
+writeFileSync(lockPath, [`# source ${config.source || 'unknown'}`, `# commit ${commit}`,
+  ...Object.entries(files).map(([path, hash]) => `${hash}  ${path}`)].join('\n') + '\n');
 console.log(`Engine ${commit.slice(0, 7)}: ${added} added, ${updated} updated, ${same} unchanged.`);
 if (dropped.length) console.log(`No longer in the engine (delete here if unused):\n  ${dropped.join('\n  ')}`);
 console.log('Next: npm run sync:skills, then npm test.');
