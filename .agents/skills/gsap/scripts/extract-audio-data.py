@@ -49,7 +49,8 @@ def decode_audio(path: str) -> np.ndarray:
         "-loglevel", "error",
         "pipe:1",
     ]
-    result = subprocess.run(cmd, capture_output=True)
+    # Argument list without a shell; the path is the user's own media file.
+    result = subprocess.run(cmd, capture_output=True)  # nosemgrep
     if result.returncode != 0:
         print(f"ffmpeg error: {result.stderr.decode()}", file=sys.stderr)
         sys.exit(1)
