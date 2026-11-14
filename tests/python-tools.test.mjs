@@ -12,6 +12,9 @@ const scripts = [
   '.claude/skills/edit-qc/scripts/craft_qc.py',
   '.claude/skills/edit-qc/scripts/first_pass_gate.py',
   'scripts/deliver.py',
+  '.claude/skills/batch-reels/scripts/assemble_takes.py',
+  '.claude/skills/batch-reels/scripts/reel_batch.py',
+  '.claude/skills/batch-reels/scripts/piece_timing.py',
 ];
 const hasPython = !spawnSync(python, ['--version']).error;
 

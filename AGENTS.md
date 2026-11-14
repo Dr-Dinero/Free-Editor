@@ -28,6 +28,7 @@ For one stage, load the matching local skill:
 | --- | --- |
 | First-time install and service setup | `setup-editor` |
 | Talking-head Reels and Shorts (sermons, teachings, podcasts) | `talking-head-edit` |
+| A batch of Reels or ads built from recorded takes, one command, gated | `batch-reels` (`npm run batch`) |
 | Measured craft QC and review of any render | `edit-qc` |
 | Word alignment, VAD, reframe, shots, voice cleanup, loudness, ducking, cut-outs, Lottie | `docs/POWER-TOOLS.md` (`npm run tools`) |
 | Reels, Shorts, and ads with screen recordings or designed scenes | `short-form-edit` |
