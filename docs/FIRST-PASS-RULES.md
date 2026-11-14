@@ -67,3 +67,11 @@ npm run deliver -- renders/<name>.mp4 --id <video-id> --version v1
 2. The approved look is saved as a preset and a template, and the batch reads from them.
 3. Say which pack or preset each style choice comes from. Never invent a house style.
 4. Never label a speaker, state a price, or spell a name from a guess.
+
+## Built into the batch tools
+
+For reels assembled from recorded takes (`batch-reels`), these rules are not left to the gate
+to catch. `assemble_takes.py` cuts only after the voice has stopped and lists any cut that had
+no silence to land in, ends on live footage, and crops to the face. `piece_timing.py` anchors
+every overlay to a word and picks the zoom at each cut from the measured face size. The gate
+then confirms it on the render.
